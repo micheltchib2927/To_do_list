@@ -1,0 +1,32 @@
+body{
+    box-sizing: border-box;
+    margin: 0;
+    background-color: black;
+    font-family: "Orbitron", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+}
+
+.banner{
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-task{
+    display: flex;
+    align-items: center;
+}
+
+.add-button{
+    border-style: solid;
+    border-width: 2px;
+    border-color: white;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.add-button:hover{
+    cursor: pointer;
+}
