@@ -14,12 +14,12 @@ body{
     justify-content: space-between;
 }
 
-.add-task{
+.add-project{
     display: flex;
     align-items: center;
 }
 
-.add-button{
+.add-project-button{
     border-style: solid;
     border-width: 2px;
     border-color: white;
@@ -27,6 +27,81 @@ body{
     background-color: black;
 }
 
-.add-button:hover{
+button:hover{
     cursor: pointer;
+}
+
+.task{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    border-radius: 10px;
+    background-color: rgb(22, 22, 22);
+    margin: auto;
+    margin-top: 25px;
+    padding: 0 5px 0 5px;
+    animation: apparition 1s;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.task input:hover{
+    cursor: pointer;
+}
+
+.task button{
+    background-color: rgb(66, 67, 68);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 20px;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title *{
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.title button{
+    background-color: rgb(66, 67, 68);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    color: white;
+    margin-top: 20px;
+}
+
+.blue-bar{
+    border-radius: 20px;
+    background-color: aqua;
+    height: 4px;
+    width: 10%;
+}
+
+.add-ask-button{
+    border-radius: 15px;
+    background-color: rgb(22, 22, 22);
+}
+
+@keyframes apparition{
+    from{
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to{
+        opacity: 100;
+        transform: translateY(0px);
+    }
 }
