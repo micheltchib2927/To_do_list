@@ -1,61 +1,83 @@
 let add_project_btn = document.querySelector(".add-project-button")
 let project_tmpl = document.querySelector("#project-template")
-let projects = JSON.parse(localStorage.getItem("projects") || "[]")
+let i = 0
 
+/*getting saved projects*/
+let projects_list = JSON.parse(localStorage.getItem("projects") || "[]")
 
-const add_project = () =>{
-    let project = project_tmpl.content.cloneNode(true)
-    let project_clone = project.querySelector(".task")
+/*updating page appearance nased on existing projects*/
+const page_update = (p) =>{
 
-    let project_data = {
-        name: project_clone.querySelector("textarea").value,
-        status: project_clone.querySelector("h4").textContent,
-        link: project_clone.querySelector("a").href,
-        id: "id_" + Math.round(Math.random()*1000)
-    }
+    let ptmpl_clone = project_tmpl.content.cloneNode(true)
+    let project = ptmpl_clone.querySelector(".task")
+    project.querySelector("textarea").value = p.name
+    project.querySelector("h4").textContent = p.status
+    project.querySelector("a").href = p.link
+
+    /*dynamic project name change*/
+    project.querySelector("textarea").addEventListener("input", () =>{
+        p.name = project.querySelector("textarea").value
+        /*saving projects*/
+        localStorage.setItem("projects", JSON.stringify(projects_list))
+    })
 
     document.body.appendChild(project)
 
-    project_clone.querySelector("textarea").addEventListener("input", () =>{
-        projects.forEach(p => {
-            if(p.id === project_data.id){
-                p.name = project_clone.querySelector("textarea").value
-                localStorage.setItem("projects", JSON.stringify(projects))
-            }
-        })
-        project_data.name = project_clone.querySelector("textarea").value
+    /*delete functionality*/
+    project.querySelector("button").addEventListener("click", () =>{
+        project.remove()
+        projects_list.splice(project.id, 1)
+        /*saving projects*/
+        localStorage.setItem("projects", JSON.stringify(projects_list))
     })
-
-    save_pj(project_data)
 }
 
-add_project_btn.addEventListener("click", () => {
-    add_project()
+projects_list.forEach(p =>{
+    page_update(p)
 })
 
-const save_pj = (p) =>{
-    let i = 0
-    projects.forEach(project => {
-        if(project.id !== p.id){
-            i++
-        }
-    })
-    if(i === projects.length){
-        projects.push(p)
+/*creating the Project class*/
+class Project {
+    constructor(name, status, link, id){
+        this.name = name
+        this.status = status
+        this.link = link
+        this.id = id
     }
-    localStorage.setItem("projects", JSON.stringify(projects))
 }
 
-const get_pjs = () =>{
-        projects.forEach(project => {
-        let pj_clone = project_tmpl.content.cloneNode(true)
+/*project creation*/
+add_project_btn.addEventListener("click", ()=>{
+    let ptmpl_clone = project_tmpl.content.cloneNode(true)
+    let project = ptmpl_clone.querySelector(".task")
 
-        pj_clone.querySelector("textarea").value = project.name 
-        pj_clone.querySelector("h4").textContent = project.status
-        pj_clone.querySelector("a").href = project.link 
+    let new_project = new Project (
+        project.querySelector("textarea").value,
+        project.querySelector("h4").textContent,
+        project.querySelector("a").href,
+        i
+    )
 
-        document.body.appendChild(pj_clone)
-    });
-}
+    /*dynamic project name change*/
+    project.querySelector("textarea").addEventListener("input", () =>{
+        new_project.name = project.querySelector("textarea").value
+        /*saving projects*/
+        localStorage.setItem("projects", JSON.stringify(projects_list))
+    })
 
-get_pjs();
+    projects_list.push(new_project)
+
+    document.body.appendChild(project)
+
+    /*delete functionality*/
+    project.querySelector("button").addEventListener("click", () =>{
+        project.remove()
+        projects_list.splice(project.id, 1)
+        /*saving projects*/
+        localStorage.setItem("projects", JSON.stringify(projects_list))
+    })
+
+    /*saving projects*/
+    localStorage.setItem("projects", JSON.stringify(projects_list))
+    i++
+})
