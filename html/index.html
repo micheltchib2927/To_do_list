@@ -19,11 +19,17 @@
         </div>
     </header>
     <hr style="color: aqua;">
-    <a href="project.html">
         <div class="task">
-            <h1>Projet N°1</h1>
+            <textarea id="project-text-area" spellcheck="false" placeholder="Nommez le projet" style="width: 50%;"></textarea>
+            <a href="project.html"></a>
             <h4 style="color: grey; align-self: center;">Statut: En cours</h4>
         </div>
-    </a>
+    <template id="project-template">
+            <div class="task">
+                <textarea id="project-text-area" spellcheck="false" placeholder="Nommez le projet"></textarea>
+                <a href="project.html"></a>
+                <h4 style="color: grey; align-self: center;">Statut: En cours</h4>
+            </div>   
+    </template>
 </body>
 </html>
