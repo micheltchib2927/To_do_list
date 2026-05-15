@@ -1,18 +1,17 @@
 let add_project_btn = document.querySelector(".add-project-button")
 let project_tmpl = document.querySelector("#project-template")
-let i = 0
+let i = localStorage.getItem("index")
 
 /*getting saved projects*/
 let projects_list = JSON.parse(localStorage.getItem("projects") || "[]")
 
-/*updating page appearance nased on existing projects*/
+/*updating page appearance based on existing projects*/
 const page_update = (p) =>{
 
     let ptmpl_clone = project_tmpl.content.cloneNode(true)
     let project = ptmpl_clone.querySelector(".task")
     project.querySelector("textarea").value = p.name
     project.querySelector("h4").textContent = p.status
-    project.querySelector("a").href = p.link
 
     /*dynamic project name change*/
     project.querySelector("textarea").addEventListener("input", () =>{
@@ -21,15 +20,19 @@ const page_update = (p) =>{
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
 
-    document.body.appendChild(project)
-
     /*delete functionality*/
     project.querySelector("button").addEventListener("click", () =>{
         project.remove()
-        projects_list.splice(project.id, 1)
+        let index = projects_list.findIndex(proj => proj.id == p.id)
+        projects_list.splice(index, 1)
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
+
+    /*page switch*/
+    project.querySelector("a").href = `project.html?id=${p.id}&name=${encodeURIComponent(p.name)}`
+
+    document.body.appendChild(project)
 }
 
 projects_list.forEach(p =>{
@@ -38,10 +41,9 @@ projects_list.forEach(p =>{
 
 /*creating the Project class*/
 class Project {
-    constructor(name, status, link, id){
+    constructor(name, status, id){
         this.name = name
         this.status = status
-        this.link = link
         this.id = id
     }
 }
@@ -54,7 +56,6 @@ add_project_btn.addEventListener("click", ()=>{
     let new_project = new Project (
         project.querySelector("textarea").value,
         project.querySelector("h4").textContent,
-        project.querySelector("a").href,
         i
     )
 
@@ -65,19 +66,21 @@ add_project_btn.addEventListener("click", ()=>{
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
 
-    projects_list.push(new_project)
-
-    document.body.appendChild(project)
-
     /*delete functionality*/
     project.querySelector("button").addEventListener("click", () =>{
         project.remove()
-        projects_list.splice(project.id, 1)
+        let index = projects_list.findIndex(proj => proj.id == new_project.id)
+        projects_list.splice(index, 1)
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
 
+    /*page switch*/
+    project.querySelector("a").href = `project.html?id=${new_project.id}&name=${encodeURIComponent(new_project.name)}`
+
+    document.body.appendChild(project)
     /*saving projects*/
+    projects_list.push(new_project)
     localStorage.setItem("projects", JSON.stringify(projects_list))
     i++
-})
+})    

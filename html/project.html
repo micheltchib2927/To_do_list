@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <script src="../js/app.js" type="module"></script>
+    <script src="../js/project_page.js" type="module"></script>
 </head>
 <body>
     <div class="title">
@@ -16,14 +16,7 @@
         <div class="blue-bar"></div>
         <button class="add-task-button">Ajouter une tâche</button>
     </div>
-    <div class="task">
-        <textarea spellcheck="false" placeholder="Décrivez la tâche"></textarea>
-        <div style="display: flex; align-items: center; padding-right: 5px;">
-            <input type="checkbox">
-            <button style="margin: 0;">Del</button>
-        </div>
-    </div>
-    <template class="tesk-template">
+    <template id="task-template">
         <div class="task">
             <textarea spellcheck="false" placeholder="Décrivez la tâche"></textarea>
             <div style="display: flex; align-items: center; padding-right: 5px;">
