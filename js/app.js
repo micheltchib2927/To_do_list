@@ -1,13 +1,12 @@
 let add_project_btn = document.querySelector(".add-project-button")
 let project_tmpl = document.querySelector("#project-template")
-let i = localStorage.getItem("index")
 
 /*getting saved projects*/
 let projects_list = JSON.parse(localStorage.getItem("projects") || "[]")
 
 /*updating page appearance based on existing projects*/
 const page_update = (p) =>{
-
+    let last_index = Number(localStorage.getItem("last_index"))
     let ptmpl_clone = project_tmpl.content.cloneNode(true)
     let project = ptmpl_clone.querySelector(".task")
     project.querySelector("textarea").value = p.name
@@ -22,9 +21,15 @@ const page_update = (p) =>{
 
     /*delete functionality*/
     project.querySelector("button").addEventListener("click", () =>{
+        let last_index = Number(localStorage.getItem("last_index"))
         project.remove()
-        let index = projects_list.findIndex(proj => proj.id == p.id)
-        projects_list.splice(index, 1)
+        projects_list.forEach(project =>{
+            if(project.id > p.id){
+                project.id -= 1
+            }
+        })
+        projects_list.splice(p.id, 1)
+        localStorage.setItem("last_index", String(last_index - 1))
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
@@ -50,14 +55,22 @@ class Project {
 
 /*project creation*/
 add_project_btn.addEventListener("click", ()=>{
+    let last_index 
+    if(localStorage.getItem("last_index")){
+        last_index = Number(localStorage.getItem("last_index"))
+    }else{
+        last_index = 0
+    }
     let ptmpl_clone = project_tmpl.content.cloneNode(true)
     let project = ptmpl_clone.querySelector(".task")
 
     let new_project = new Project (
         project.querySelector("textarea").value,
         project.querySelector("h4").textContent,
-        i
+        last_index
     )
+
+    localStorage.setItem("last_index", String(new_project.id + 1))
 
     /*dynamic project name change*/
     project.querySelector("textarea").addEventListener("input", () =>{
@@ -66,11 +79,20 @@ add_project_btn.addEventListener("click", ()=>{
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
 
+    /*saving projects*/
+    projects_list.push(new_project)
+    localStorage.setItem("projects", JSON.stringify(projects_list))
+
     /*delete functionality*/
     project.querySelector("button").addEventListener("click", () =>{
         project.remove()
-        let index = projects_list.findIndex(proj => proj.id == new_project.id)
-        projects_list.splice(index, 1)
+        projects_list.forEach(project =>{
+            if(project.id > new_project.id){
+                project.id -= 1
+            }
+        })
+        projects_list.splice(new_project.id, 1)
+        localStorage.setItem("last_index", String(new_project.id))
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
@@ -79,8 +101,4 @@ add_project_btn.addEventListener("click", ()=>{
     project.querySelector("a").href = `project.html?id=${new_project.id}&name=${encodeURIComponent(new_project.name)}`
 
     document.body.appendChild(project)
-    /*saving projects*/
-    projects_list.push(new_project)
-    localStorage.setItem("projects", JSON.stringify(projects_list))
-    i++
 })    
