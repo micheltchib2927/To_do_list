@@ -15,6 +15,7 @@ const page_update = (p) =>{
     /*dynamic project name change*/
     project.querySelector("textarea").addEventListener("input", () =>{
         p.name = project.querySelector("textarea").value
+        project.querySelector("a").href = `project.html?id=${new_project.id}&name=${encodeURIComponent(new_project.name)}`
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
@@ -51,6 +52,8 @@ class Project {
         this.status = status
         this.id = id
     }
+
+    tasks_list = []
 }
 
 /*project creation*/
@@ -75,6 +78,7 @@ add_project_btn.addEventListener("click", ()=>{
     /*dynamic project name change*/
     project.querySelector("textarea").addEventListener("input", () =>{
         new_project.name = project.querySelector("textarea").value
+        project.querySelector("a").href = `project.html?id=${new_project.id}&name=${encodeURIComponent(new_project.name)}`
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
@@ -92,7 +96,7 @@ add_project_btn.addEventListener("click", ()=>{
             }
         })
         projects_list.splice(new_project.id, 1)
-        localStorage.setItem("last_index", String(new_project.id))
+        localStorage.setItem("last_index", String(last_index - 1))
         /*saving projects*/
         localStorage.setItem("projects", JSON.stringify(projects_list))
     })
